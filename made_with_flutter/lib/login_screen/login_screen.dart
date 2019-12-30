@@ -1,12 +1,18 @@
 
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:made_with_flutter/global_style.dart';
 import 'package:made_with_flutter/helper.dart';
 import 'package:made_with_flutter/login_screen/login_screen_style.dart';
 import 'package:simple_animations/simple_animations/controlled_animation.dart';
 import 'package:simple_animations/simple_animations/multi_track_tween.dart';
+
+import '../global_style.dart';
+import '../global_style.dart';
+import '../global_style.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -30,9 +36,17 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   bool hidePassword = true;
   bool darkMode = false;
 
+  bool keyboardVisibility = false;
+
   @override
   void initState() {
     super.initState();
+
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        keyboardVisibility = visible;
+      }
+    );
 
     usernameFocusNode.addListener(usernameFocusListener);
     passwordFocusNode.addListener(passwordFocusListener);
@@ -48,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
 
-    bool keyboardVisibility = MediaQuery.of(context).viewInsets.bottom > 0;
+    //bool keyboardVisibility = MediaQuery.of(context).viewInsets.bottom > 0;
 
     // Helper class objects
     FlutterHelper flutterHelper = FlutterHelper(context);
@@ -111,9 +125,9 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 children: <Widget>[
                   AnimatedPositioned(
                     duration: Duration(milliseconds: 300),
-                    top: screenHeight * 0.05,
-                    left: marginLarge,
-                    right: keyboardVisibility ? null : marginLarge,//marginLarge,
+                    top: screenHeight * 0.02,
+                    left: screenWidth * 0.01,
+                    right: keyboardVisibility ? null : screenWidth * 0.01,
                     child: Column(
                       children: <Widget>[
                         FlutterLogo(
@@ -157,11 +171,11 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         child: Stack(
                           children: <Widget>[
                             Positioned(
-                              top: marginLarge*4,
+                              top: screenHeight * 0.07,
                               right: marginLarge,
                               child: AnimatedOpacity(
                                 opacity: _animatedOpacity,
-                                duration: Duration(milliseconds: 1000),
+                                duration: Duration(milliseconds: 5000),
                                 child: Text(
                                   "Welcome!",
                                   style: TextStyle(
@@ -176,13 +190,13 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             ),
                             // Add login FAB
                             Positioned(
-                              bottom: 32,
-                              right: 32,
+                              bottom: 16,
+                              right: 16,
                               child: FloatingActionButton(
                                 backgroundColor: Colors.pink[500],
                                 elevation: 2.0,
                                 tooltip: "Login",
-                                onPressed: () => onFabPressed(),
+                                onPressed: () => onFabPressed(context),
                                 foregroundColor: Colors.white,
                                 child: Icon(
                                   Icons.arrow_forward,
@@ -240,7 +254,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             ),
                             // Add a password textfield
                             Positioned(
-                              top: cardHeight * 0.47,
+                              top: cardHeight * 0.3 + 80,
                               left: screenWidth*0.15,
                               child: Row(
                                 children: <Widget>[
@@ -301,7 +315,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               ),
                             ),
                             Positioned(
-                              top: cardHeight * 0.6,
+                              top: cardHeight * 0.3 + 140,
                               left: 0,
                               right: 0,
                               child: FlatButton(
@@ -321,8 +335,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             ),
                             Positioned(
                               bottom: marginLarge,
-                              left: 0,
-                              right: 0,
+                              left: screenWidth/3.5,
+                              right: screenWidth/3.5,
                               child: FlatButton(
                                 onPressed: () => onGotoSignup(),
                                 color: Colors.transparent,
@@ -353,8 +367,25 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     );
   }
 
-  void onFabPressed() {
+  void onFabPressed(BuildContext context){
     print("FAB Pressed");
+    Flushbar(
+      duration: Duration(seconds: 5),
+      showProgressIndicator: true,
+      progressIndicatorBackgroundColor: mainLightColor,
+      progressIndicatorValueColor: AlwaysStoppedAnimation<Color>(Colors.blue[600]),
+      messageText: Text(
+        "Logging you in..",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: defaultFont,
+          color: Colors.white,
+          fontSize: fontSizeMedium,
+          letterSpacing: 1
+        ),
+      ),
+      isDismissible: false,
+    )..show(context);
   }
 
   void usernameFocusListener() {
