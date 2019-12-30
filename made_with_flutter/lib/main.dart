@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:made_with_flutter/helper.dart';
 import 'package:made_with_flutter/login_screen/login_screen.dart';
 import 'package:made_with_flutter/login_screen/login_screen_style.dart';
+import 'package:made_with_flutter/onboarding_screen/onboarding_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,10 +26,12 @@ class MyWidget extends StatelessWidget {
       title: 'Made With Flutter',
       routes: {
         '\login_screen': (context) => LoginScreen(),
+        '\onboarding_screen': (context) => OnboardingScreen(),
       },
       theme: colorManager.getMaterialTheme(),
       darkTheme: colorManager.getMaterialTheme(),
-      home: LoginScreen(),
+      //home: LoginScreen(),
+      home: OnboardingScreen(),
     );
   }
 }
