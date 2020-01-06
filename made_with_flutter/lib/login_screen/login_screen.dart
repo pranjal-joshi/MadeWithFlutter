@@ -36,6 +36,9 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   bool keyboardVisibility = false;
 
+  AnimationController welcomeController;
+  Animation<double> welcomeAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -48,12 +51,31 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
     usernameFocusNode.addListener(usernameFocusListener);
     passwordFocusNode.addListener(passwordFocusListener);
+
+    welcomeController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2)
+    );
+    welcomeAnimation = CurvedAnimation(
+      curve: Curves.decelerate,
+      parent: welcomeController
+    );
+    welcomeController.addStatusListener((status){
+      if(status == AnimationStatus.completed) {
+        welcomeController.reverse();
+      }
+      else if(status == AnimationStatus.dismissed) {
+        welcomeController.forward();
+      }
+    });
+    welcomeController.forward();
   }
 
   @override
   void dispose() {
     usernameFocusNode.dispose();
     passwordFocusNode.dispose();
+    welcomeController.dispose();
     super.dispose();
   }
 
@@ -78,13 +100,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     double cardHeight = screenHeight * 0.6;
 
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
-    double _animatedOpacity = 1;
-    Future.delayed(Duration(milliseconds: 1000),(){
-      setState(() {
-        _animatedOpacity = 0;
-      });
-    });
 
     final tween = MultiTrackTween([
       Track("color1").add(
@@ -171,9 +186,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             Positioned(
                               top: screenHeight * 0.07,
                               right: marginLarge,
-                              child: AnimatedOpacity(
-                                opacity: _animatedOpacity,
-                                duration: Duration(milliseconds: 5000),
+                              child: FadeTransition(
+                                opacity: welcomeAnimation,
                                 child: Text(
                                   "Welcome!",
                                   style: TextStyle(
@@ -184,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                     letterSpacing: 2.0
                                   ),
                                 ),
-                              )
+                              ),
                             ),
                             // Add login FAB
                             Positioned(
@@ -332,20 +346,21 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               ),
                             ),
                             Positioned(
-                              bottom: marginLarge,
-                              left: 0,
-                              right: screenWidth/3.5,
-                              child: FlatButton(
-                                onPressed: () => onGotoSignup(),
-                                color: Colors.transparent,
-                                splashColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                child: Text(
-                                  "I don't have an account",
-                                  style: TextStyle(
-                                    color: darkMode ? mainDarkColor : mainLightColor,
-                                    fontFamily: defaultFont,
-                                    fontSize: 14,
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: FlatButton(
+                                  onPressed: () => onGotoSignup(),
+                                  color: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  child: Text(
+                                    "I don't have an account",
+                                    style: TextStyle(
+                                      color: darkMode ? mainDarkColor : mainLightColor,
+                                      fontFamily: defaultFont,
+                                      fontSize: 14.0,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ),
