@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
+import 'package:made_with_flutter/login_screen/login_screen.dart';
+import 'package:page_transition/page_transition.dart';
 
-import '../global_style.dart';
-import '../global_style.dart';
-import '../global_style.dart';
-import '../global_style.dart';
-import '../global_style.dart';
 import '../global_style.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -152,10 +149,20 @@ class OnboardingScreen extends StatelessWidget {
         doneButtonPersist: false,
         showSkipButton: true,
         onTapDoneButton: () {
-          Navigator.pushReplacementNamed(context, "\login_screen");
+          Navigator.pushReplacement(context, PageTransition(
+          child: LoginScreen(),
+          type: PageTransitionType.rightToLeftWithFade,
+          curve: Curves.easeOut,
+          duration: Duration(milliseconds: 800)
+        ));
         },
         onTapSkipButton: () {
-          Navigator.pushReplacementNamed(context, "\login_screen");
+          Navigator.pushReplacement(context, PageTransition(
+          child: LoginScreen(),
+          type: PageTransitionType.rightToLeftWithFade,
+          curve: Curves.easeOut,
+          duration: Duration(milliseconds: 800)
+        ));
         },
       ),
     );
