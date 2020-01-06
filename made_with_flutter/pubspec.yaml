@@ -27,6 +27,7 @@ dependencies:
   intro_views_flutter: ^2.8.0
   flutter_svg: ^0.15.0
   page_transition: ^1.1.5
+  gradient_text: ^1.0.2
 
 dev_dependencies:
   flutter_test:
