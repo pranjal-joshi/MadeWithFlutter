@@ -11,8 +11,6 @@ import 'package:simple_animations/simple_animations/controlled_animation.dart';
 import 'package:simple_animations/simple_animations/multi_track_tween.dart';
 
 import '../global_style.dart';
-import '../global_style.dart';
-import '../global_style.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -335,7 +333,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             ),
                             Positioned(
                               bottom: marginLarge,
-                              left: screenWidth/3.5,
+                              left: 0,
                               right: screenWidth/3.5,
                               child: FlatButton(
                                 onPressed: () => onGotoSignup(),
