@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_text/gradient_text.dart';
 import 'package:made_with_flutter/global_style.dart';
 import 'package:made_with_flutter/helper.dart';
 import 'package:made_with_flutter/login_screen/login_screen.dart';
@@ -34,16 +35,22 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     animation.addStatusListener( (status) {
       if(status == AnimationStatus.completed) {
-        //controller.reverse();
+        controller.reverse();
+        /*Navigator.pushReplacement(context, PageTransition(
+          child: OnboardingScreen(),
+          type: PageTransitionType.rightToLeftWithFade,
+          curve: Curves.easeOut,
+          duration: Duration(milliseconds: 800)
+        ));*/
+      }
+      else if(status == AnimationStatus.dismissed) {
+        //controller.forward();
         Navigator.pushReplacement(context, PageTransition(
           child: OnboardingScreen(),
           type: PageTransitionType.rightToLeftWithFade,
           curve: Curves.easeOut,
           duration: Duration(milliseconds: 800)
         ));
-      }
-      else if(status == AnimationStatus.dismissed) {
-        controller.forward();
       }
     });
 
@@ -64,22 +71,40 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       body: SizedBox.expand(
         child: Container(
           decoration: BoxDecoration(
-            gradient: colorManager.getLinearGradient(
-              beginFrom: Alignment.topRight,
-              endAt: Alignment.bottomLeft,
-              fromColor: Colors.pink[500],
-              toColor: Colors.blue[800],
-            ),
-            color: Colors.black,
+            color: darkMode ? Colors.black : Colors.white60,
           ),
           alignment: Alignment.center,
           child: FadeTransition(
             opacity: animation,
             child: Center(
               child: Container(
-                child: FlutterLogo(
-                  size: screenWidth/2,
-                  colors: Colors.amber,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    FlutterLogo(
+                      size: screenWidth/2.5,
+                      colors: Colors.red,
+                    ),
+                    Container(
+                      height: screenWidth / 10,
+                    ),
+                    GradientText(
+                      "Made With Flutter",
+                      style: TextStyle(
+                        fontFamily: defaultFont,
+                        fontSize: fontSizeXL*1.2,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 2.0
+                      ),
+                      textAlign: TextAlign.center,
+                      gradient: colorManager.getLinearGradient(
+                        beginFrom: Alignment.topRight,
+                        endAt: Alignment.bottomLeft,
+                        fromColor: Colors.orange[500],
+                        toColor: Colors.lightGreen[500],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
