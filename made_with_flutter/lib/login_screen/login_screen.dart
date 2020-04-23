@@ -82,8 +82,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
 
-    //bool keyboardVisibility = MediaQuery.of(context).viewInsets.bottom > 0;
-
     // Helper class objects
     FlutterHelper flutterHelper = FlutterHelper(context);
     darkMode = flutterHelper.isDarkModeActive();
